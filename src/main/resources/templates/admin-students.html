@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student List</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" href="/css/dashboard.css"/>
+</head>
+<body>
+<header class="topbar">
+  <div class="container">
+    <h2 class="brand">StudentReg — Admin</h2>
+    <nav>
+      <a th:href="@{/admin/dashboard}">Dashboard</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+    <h1>All Students</h1>
+    <a th:href="@{/admin/dashboard}">← Back to Dashboard</a>
+
+    <div th:if="${students == null or #lists.isEmpty(students)}">
+        <p>No students found.</p>
+    </div>
+
+    <table th:if="${students != null and !#lists.isEmpty(students)}"
+           border="1" cellpadding="8" style="margin-top:20px; width:100%;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Branch</th>
+                <th>Semester</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="s : ${students}">
+                <td th:text="${s.id}">1</td>
+                <td th:text="${s.name}">Name</td>
+                <td th:text="${s.email}">email</td>
+                <td th:text="${s.branch}">branch</td>
+                <td th:text="${s.semester}">sem</td>
+                <td>
+                    <a th:href="@{'/admin/students/view/' + ${s.id}}">View</a> |
+                    <form th:action="@{'/admin/students/delete/' + ${s.id}}" method="post" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Delete this student?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>View Student — Admin</title>
+  <link rel="stylesheet" th:href="@{/css/dashboard.css}" href="/css/dashboard.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container">
+    <h2 class="brand">StudentReg — Admin</h2>
+    <nav>
+      <a th:href="@{/admin/dashboard}">Dashboard</a>
+      <a th:href="@{/admin/students}">All Students</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <h1>Student Details</h1>
+  <a th:href="@{/admin/students}">← Back to Students</a>
+
+  <!-- Defensive: only show details if model 'student' exists -->
+  <div th:if="${student != null}" style="margin-top:20px;">
+    <table style="width:60%; border-collapse:collapse;">
+      <tr>
+        <th style="text-align:left; padding:6px;">ID</th>
+        <td style="padding:6px;" th:text="${student.id}">1</td>
+      </tr>
+      <tr>
+        <th style="text-align:left; padding:6px;">Name</th>
+        <td style="padding:6px;" th:text="${student.name}">Name</td>
+      </tr>
+      <tr>
+        <th style="text-align:left; padding:6px;">Email</th>
+        <td style="padding:6px;" th:text="${student.email}">user@example.com</td>
+      </tr>
+      <tr>
+        <th style="text-align:left; padding:6px;">Branch</th>
+        <td style="padding:6px;" th:text="${student.branch ?: '—'}">—</td>
+      </tr>
+      <tr>
+        <th style="text-align:left; padding:6px;">Semester</th>
+        <td style="padding:6px;" th:text="${student.semester != null ? student.semester : '—'}">—</td>
+      </tr>
+    </table>
+
+    <!-- registrations: defensive check -->
+    <section style="margin-top:20px;">
+      <h2>Registrations</h2>
+      <div th:if="${registrations == null or #lists.isEmpty(registrations)}">
+        <p>No registrations found for this student.</p>
+      </div>
+
+      <table th:if="${registrations != null and !#lists.isEmpty(registrations)}"
+             style="width:80%; border-collapse:collapse; margin-top:10px;">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding:6px;">Course</th>
+            <th style="text-align:left; padding:6px;">Status</th>
+            <th style="text-align:left; padding:6px;">Registered At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="r : ${registrations}">
+            <td th:text="${r.course != null ? r.course.name : '—'}">Course name</td>
+            <td th:text="${r.status ?: '—'}">Status</td>
+            <td th:text="${r.registeredAt != null ? #dates.format(r.registeredAt, 'yyyy-MM-dd HH:mm') : '—'}">Date</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- admin actions -->
+    <div style="margin-top:20px;">
+      <form th:action="@{'/admin/students/delete/' + ${student.id}}" method="post"
+            onsubmit="return confirm('Delete this student?');" style="display:inline;">
+        <button type="submit">Delete Student</button>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- If model missing -->
+  <div th:if="${student == null}" style="margin-top:20px;">
+    <p style="color:darkred;">Student not found or missing data.</p>
+  </div>
+</main>
+
+<footer style="margin-top:30px;">StudentReg — Demo</footer>
+</body>
+</html>

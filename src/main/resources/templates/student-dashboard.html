@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Dashboard</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+
+    <h2 class="text-center text-primary mb-4" th:text="'Welcome, ' + ${student.name} + '!'"></h2>
+
+    <!-- ✅ Registered Courses -->
+    <div class="card mb-4 shadow">
+        <div class="card-header bg-success text-white">
+            <h5>Your Registered Courses</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped" th:if="${registrations.size() > 0}">
+                <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Course Name</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="reg : ${registrations}">
+                        <td th:text="${reg.course.code}"></td>
+                        <td th:text="${reg.course.name}"></td>
+                        <td th:text="${reg.course.description}"></td>
+                        <td>
+                            <form th:action="@{/student/course/drop}" method="post">
+                                <input type="hidden" name="studentId" th:value="${student.id}" />
+                                <input type="hidden" name="courseId" th:value="${reg.course.id}" />
+                                <button type="submit" class="btn btn-danger btn-sm">Drop</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p th:if="${registrations.size() == 0}" class="text-muted">You haven’t registered for any courses yet.</p>
+        </div>
+    </div>
+
+    <!-- ✅ Available Courses -->
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h5>Available Courses</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover" th:if="${allCourses.size() > 0}">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Seats Left</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="course : ${allCourses}">
+                        <td th:text="${course.code}"></td>
+                        <td th:text="${course.name}"></td>
+                        <td th:text="${course.description}"></td>
+                        <td th:text="${course.capacity - course.enrolled}"></td>
+                        <td>
+                            <form th:action="@{/student/course/register}" method="post">
+                                <input type="hidden" name="studentId" th:value="${student.id}" />
+                                <input type="hidden" name="courseId" th:value="${course.id}" />
+                                <button type="submit" class="btn btn-success btn-sm">Register</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p th:if="${allCourses.size() == 0}" class="text-muted">No available courses.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

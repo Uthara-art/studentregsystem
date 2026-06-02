@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Registrations</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            color: #2c3e50;
+        }
+
+        .container {
+            width: 85%;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 18px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>All Course Registrations</h2>
+
+        <div th:if="${#lists.isEmpty(registrations)}" class="no-data">
+            <p>No registrations found.</p>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(registrations)}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Student Email</th>
+                        <th>Course Name</th>
+                        <th>Course Code</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="reg : ${registrations}">
+                        <td th:text="${reg.student.name}">Student Name</td>
+                        <td th:text="${reg.student.email}">Student Email</td>
+                        <td th:text="${reg.course.name}">Course Name</td>
+                        <td th:text="${reg.course.code}">Course Code</td>
+                        <td th:text="${reg.status}">Status</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <a th:href="@{/admin/dashboard}" class="back-btn">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

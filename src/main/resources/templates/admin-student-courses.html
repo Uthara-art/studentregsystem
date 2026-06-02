@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <title>Manage Courses for Student</title>
+  <link rel="stylesheet" th:href="@{/css/dashboard.css}" href="/css/dashboard.css"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <h2 class="brand">StudentReg — Admin</h2>
+      <nav>
+        <a th:href="@{/admin/dashboard}">Dashboard</a>
+        <a th:href="@{/admin/students}">Students</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Courses for <span th:text="${student != null ? student.name : 'Unknown Student'}">Student</span></h1>
+
+    <div th:if="${errorMessage}">
+      <p style="color:red;" th:text="${errorMessage}"></p>
+    </div>
+
+    <div th:if="${student == null}">
+      <p>Student not found.</p>
+      <a th:href="@{/admin/students}">Back to students</a>
+    </div>
+
+    <table th:if="${student != null}" style="width:100%; border-collapse:collapse;" border="1">
+      <thead>
+        <tr>
+          <th>Course Code</th>
+          <th>Title</th>
+          <th>Capacity</th>
+          <th>Enrolled</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="c : ${courses}">
+          <td th:text="${c.code}">CS101</td>
+          <td th:text="${c.title}">Intro</td>
+          <td th:text="${c.capacity}">30</td>
+          <td th:text="${#lists.size(registrations.^[course.id == c.id])}">0</td>
+          <td>
+            <div th:if="${#lists.contains(registrations.^[course.id], c.id)}">
+              <!-- already registered: show drop button -->
+              <form th:action="@{|/admin/students/${student.id}/courses/drop|}" method="post" style="display:inline;">
+                <input type="hidden" name="courseId" th:value="${c.id}" />
+                <button type="submit" onclick="return confirm('Drop this course?');">Drop</button>
+              </form>
+            </div>
+            <div th:unless="${#lists.contains(registrations.^[course.id], c.id)}">
+              <!-- not registered: show register button -->
+              <form th:action="@{|/admin/students/${student.id}/courses/register|}" method="post" style="display:inline;">
+                <input type="hidden" name="courseId" th:value="${c.id}" />
+                <button type="submit">Register</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

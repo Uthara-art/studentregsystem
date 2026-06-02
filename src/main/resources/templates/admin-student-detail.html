@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Details</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" href="/css/dashboard.css"/>
+</head>
+<body>
+<header class="topbar">
+  <div class="container">
+    <h2 class="brand">StudentReg — Admin</h2>
+  </div>
+</header>
+
+<main class="container">
+  <h2>Student Details</h2>
+
+  <!-- Show error message if student null -->
+  <div th:if="${errorMessage}">
+      <p style="color:red;" th:text="${errorMessage}"></p>
+  </div>
+
+  <!-- Render student only when present -->
+  <div th:if="${student != null}">
+      <p><strong>ID:</strong> <span th:text="${student.id}"></span></p>
+      <p><strong>Name:</strong> <span th:text="${student.name}"></span></p>
+      <p><strong>Email:</strong> <span th:text="${student.email}"></span></p>
+      <p><strong>Branch:</strong> <span th:text="${student.branch}"></span></p>
+      <p><strong>Semester:</strong> <span th:text="${student.semester}"></span></p>
+
+      <!-- If the student has registrations, show count if available -->
+      <div th:if="${student.registrations != null}">
+          <p><strong>Registrations:</strong> <span th:text="${#lists.size(student.registrations)}"></span></p>
+      </div>
+  </div>
+
+  <a th:href="@{/admin/students}">← Back to Student List</a>
+</main>
+</body>
+</html>

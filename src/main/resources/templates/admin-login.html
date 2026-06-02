@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Login - StudentReg</title>
+
+  <!-- Link to our simple stylesheet (create it as explained below) -->
+  <link rel="stylesheet" th:href="@{/css/auth.css}" href="/css/auth.css" />
+</head>
+<body>
+  <main class="center-box">
+    <div class="card">
+      <h1 class="title">Admin Login</h1>
+
+      <!-- If you later use Spring Security, make the form post to /login or /admin/login -->
+      <form th:action="@{/admin/login}" action="/admin/login" method="post" class="form">
+        <label for="username">Username or Email</label>
+        <input id="username" name="username" type="text" required autocomplete="username" />
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required autocomplete="current-password" />
+
+        <div class="actions">
+          <button type="submit" class="btn">Log in</button>
+        </div>
+      </form>
+
+      <p class="help">Back to <a th:href="@{/}" href="/">home</a></p>
+    </div>
+  </main>
+</body>
+</html>
