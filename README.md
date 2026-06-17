@@ -2,10 +2,6 @@
 
 A modern, robust Spring Boot and Thymeleaf web application designed to facilitate course registrations for students and administrative operations for academic managers.
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Railway-blueviolet?style=for-the-badge&logo=railway)](https://studentregsystem-production.up.railway.app)
-
-> **Live Deployment URL:** [studentregsystem-production.up.railway.app](https://studentregsystem-production.up.railway.app)
-
 By default, the application runs out-of-the-box using an H2 in-memory database and populates dummy data for immediate testing. It can be easily configured to connect to MySQL for persistent storage.
 
 ---
